@@ -27,7 +27,13 @@ async function run() {
             const services = await cursor.toArray();
             res.send(services);
         });
-
+         //SINGLE SERVICE API
+         app.get('/service/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await servicesCollection.findOne(query);
+            res.send(result);
+        });
 
     }
     finally {
