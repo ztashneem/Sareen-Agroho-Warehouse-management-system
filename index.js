@@ -21,6 +21,15 @@ async function run() {
         const servicesCollection = client.db("assignment-11").collection("services");
         console.log('db connected ')
 
+//AUTH
+app.post('/login', async (req, res) => {
+    const user = req.body;
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '1d'
+    });
+    res.send({ accessToken });
+})
+
         //SERVICES API
         app.get('/services', async (req, res) => {
             const cursor = servicesCollection.find()
