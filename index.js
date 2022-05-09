@@ -19,11 +19,16 @@ async function run() {
     try {
         await client.connect();
         const servicesCollection = client.db("assignment-11").collection("services");
+        console.log('db connected ')
 
-      
-      
+        //SERVICES API
+        app.get('/services', async (req, res) => {
+            const cursor = servicesCollection.find()
+            const services = await cursor.toArray();
+            res.send(services)
+        });
 
-      
+
     }
     finally {
 
