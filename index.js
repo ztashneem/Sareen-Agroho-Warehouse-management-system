@@ -50,6 +50,22 @@ async function run() {
             res.send(result);
         });
 
+        //QUANTITY DELIVERY API
+        app.put('/delivery/:id', async (req, res) => {
+            const id = req.params.id;
+            const user = req.body;
+            const deliver = user.quantity - 1;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    quantity: deliver
+                },
+            };
+            result = await servicesCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
     }
     finally {
 
