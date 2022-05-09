@@ -81,6 +81,21 @@ async function run() {
             res.send(result);
         });
 
+          //JWT API
+          app.get('/add', verifyJWT, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const email = req.query.email;
+            if (email === decodedEmail) {
+                const query = { email: email };
+                const cursor = servicesCollection.find(query);
+                const addItems = await cursor.toArray();
+                res.send(addItems)
+            }
+            else {
+                res.status(403).send({ message: 'forbidden access' })
+            }
+        })
+
     }
     finally {
 
