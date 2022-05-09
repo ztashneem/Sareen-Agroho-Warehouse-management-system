@@ -10,7 +10,21 @@ app.use(cors());
 app.use(express.json());
 
 
-
+function verifyJWT(req, res, next) {
+    const authHeaders = req.headers.authorization;
+    if (!authHeaders) {
+        return res.status(401).send({ message: 'unauthorized access' })
+    }
+    const token = authHeaders.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).send({ message: 'Forbidden access' })
+        }
+        console.log('decoded', decoded);
+        req.decoded = decoded;
+        next();
+    });
+};
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.m8xa8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
