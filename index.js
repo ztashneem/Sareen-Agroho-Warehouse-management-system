@@ -74,6 +74,12 @@ async function run() {
             const result = await servicesCollection.deleteOne(query);
             res.send(result);
         });
+         //ADD ITEM API
+         app.post('/add', async (req, res) => {
+            const newItem = req.body;
+            const result = await servicesCollection.insertOne(newItem);
+            res.send(result);
+        });
 
     }
     finally {
